@@ -47,17 +47,14 @@ function createPlayer(name, symbol) {
     };
 };
 
-/*
-const player1 = createPlayer('Rafael', 'X');
-const player2 = createPlayer('Ana', 'O');
-const game = gameController(player1, player2);
-*/
-
 function gameController(player1, player2) {
 
     const players = [player1, player2];
 
     let currentPlayer = players[0];
+
+    const getScoreP1 = () => players[0].getScore();
+    const getScoreP2 = () => players[1].getScore();
 
     const switchTurn = () => {
         if (currentPlayer === players[0]) {
@@ -83,7 +80,6 @@ function gameController(player1, player2) {
 
         // win by rows
         if (cellOne != '' && cellOne === cellTwo && cellTwo === cellThree) {
-            console.log(gameBoard.getGameBoard());
             console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
             console.log(getCurrentPlayer().getScore());
@@ -91,7 +87,6 @@ function gameController(player1, player2) {
         };
 
         if (cellFour != '' && cellFour === cellFive && cellFive === cellSix) {
-            console.log(gameBoard.getGameBoard());
             console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
             console.log(getCurrentPlayer().getScore());
@@ -99,7 +94,6 @@ function gameController(player1, player2) {
         };
 
         if (cellSeven != '' && cellSeven === cellEight && cellEight === cellNine) {
-            console.log(gameBoard.getGameBoard());
             console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
             console.log(getCurrentPlayer().getScore());
@@ -108,7 +102,6 @@ function gameController(player1, player2) {
 
         // win by columns 
         if (cellOne != '' && cellOne === cellFour && cellFour === cellSeven) {
-            console.log(gameBoard.getGameBoard());
             console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
             console.log(getCurrentPlayer().getScore());
@@ -116,7 +109,6 @@ function gameController(player1, player2) {
         };
 
         if (cellTwo != '' && cellTwo === cellFive && cellFive === cellEight) {
-            console.log(gameBoard.getGameBoard());
             console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
             console.log(getCurrentPlayer().getScore());
@@ -124,7 +116,6 @@ function gameController(player1, player2) {
         };
 
         if (cellThree != '' && cellThree === cellSix && cellSix === cellNine) {
-            console.log(gameBoard.getGameBoard());
             console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
             console.log(getCurrentPlayer().getScore());
@@ -133,7 +124,6 @@ function gameController(player1, player2) {
 
         // win by cross
         if (cellOne != '' && cellOne === cellFive && cellFive === cellNine) {
-            console.log(gameBoard.getGameBoard());
             console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
             console.log(getCurrentPlayer().getScore());
@@ -141,7 +131,6 @@ function gameController(player1, player2) {
         };
 
         if (cellThree != '' && cellThree === cellFive && cellFive === cellSeven) {
-            console.log(gameBoard.getGameBoard());
             console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
             console.log(getCurrentPlayer().getScore());
@@ -172,8 +161,6 @@ function gameController(player1, player2) {
     const playRound = (row, col) => {
         if (gameOver === false) {
             if (roundOver === false) {
-                console.log(`${getCurrentPlayer().name} is your turn`);
-                console.log(gameBoard.getGameBoard());
                 let validMovement = gameBoard.placeMarker(row, col, getCurrentPlayer().symbol);
                 if (validMovement === true) {
                     const hasWinner = winner();
@@ -181,12 +168,14 @@ function gameController(player1, player2) {
                         switchTurn();
                         tie();
                     }
-                    if (hasWinner == true) {
+                    if (hasWinner === true) {
                         let gameHasWinner = gameWinner();
                         if (gameHasWinner === true) {
                             console.log('Game Over');
+                            dom.messageGameOver();
                             gameOver = true;
                         } else {
+                            dom.messageWinner();
                             switchTurn();
                             roundOver = true;
                         }
@@ -222,8 +211,11 @@ function gameController(player1, player2) {
         getCurrentPlayer,
         newRound,
         getGameOver,
+        getRoundOver,
         resetGameOver,
-        resetRoundOver
+        resetRoundOver,
+        getScoreP1,
+        getScoreP2
     };
 }
 
@@ -231,6 +223,9 @@ function gameController(player1, player2) {
 function domController() {
 
     const board = document.getElementById('boardContainer');
+    const textInfo = document.getElementById('text-info')
+    const scoreP1 = document.getElementById('score-one');
+    const scoreP2 = document.getElementById('score-two');
 
     const renderBoard = () => {
 
@@ -238,7 +233,6 @@ function domController() {
         for (let i = 0; i < gameBoard.getGameBoard().length; i++) {       // Itera sobre las filas
             for (let j = 0; j < gameBoard.getGameBoard()[i].length; j++) {  // Itera sobre las columnas
                 const newCell = document.createElement('div');
-                newCell.classList.add('cell');
                 newCell.textContent = gameBoard.getGameBoard()[i][j];
                 newCell.dataset.row = i;
                 newCell.dataset.columns = j;
@@ -250,8 +244,27 @@ function domController() {
                     game.playRound(i, j);
                     renderBoard();
                 });
+                if (i === 0 && j <= 2) {
+                    newCell.classList.add('row-one')
+                }
+                if (i === 1 && j <= 2) {
+                    newCell.classList.add('row-two')
+                }
+                if (i <= 2 && j === 0) {
+                    newCell.classList.add('column-one')
+                }
+                if (i <= 2 && j === 1) {
+                    newCell.classList.add('column-two')
+                }
+                newCell.classList.add('cell')
                 board.appendChild(newCell);
             }
+        }
+
+        showScoreP1();
+        showScoreP2();
+        if (game.getRoundOver() === false && game.getGameOver() === false) {
+            messageTurn();
         }
 
     };
@@ -308,8 +321,36 @@ function domController() {
 
     });
 
+    const messageTurn = () => {
+        const turn = game.getCurrentPlayer().name;
+        textInfo.textContent = `${turn} is your turn`;
+    }
+
+    const messageWinner = () => {
+        const winner = game.getCurrentPlayer().name;
+        textInfo.textContent = `${winner} win`;
+    }
+
+    const messageGameOver = () => {
+        const playerGameWinner = game.getCurrentPlayer().name;
+        textInfo.textContent = `Game Over, ${playerGameWinner} is the winner`;
+    }
+
+    const showScoreP1 = () => {
+        const playerScore = game.getScoreP1();
+        scoreP1.textContent = `${playerScore}`;
+    }
+
+    const showScoreP2 = () => {
+        const playerScore = game.getScoreP2();
+        scoreP2.textContent = `${playerScore}`;
+    }
+
     return {
-        renderBoard
+        renderBoard,
+        messageTurn,
+        messageWinner,
+        messageGameOver
     };
 };
 
