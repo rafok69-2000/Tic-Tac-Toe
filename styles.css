@@ -1,39 +1,166 @@
+@font-face {
+    font-family: 'poppinsextrabold';
+    src: url('fonts/poppins-extrabold-webfont.woff2') format('woff2'),
+        url('fonts/poppins-extrabold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'poppinssemibold';
+    src: url('fonts/poppins-semibold-webfont.woff2') format('woff2'),
+        url('fonts/poppins-semibold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'press_start_2pregular';
+    src: url('fonts/pressstart2p-regular-webfont.woff2') format('woff2'),
+        url('fonts/pressstart2p-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_condenseditalic';
+    src: url('fonts/robotocondensed-italic-webfont.woff2') format('woff2'),
+        url('fonts/robotocondensed-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'roboto_condensedregular';
+    src: url('fonts/robotocondensed-regular-webfont.woff2') format('woff2'),
+        url('fonts/robotocondensed-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+:root {
+    --color-background: #1E1E1E;
+    --color-board: #2A2A2A;
+    --color-lines: #444;
+    --color-text: #EAEAEA;
+    --color-player: #FF6B6B;
+    --color-buttons: #333;
+    --color-hover: #3F3F3F;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    color: var(--color-text);
+}
+
+body {
+    background-color: var(--color-background);
+}
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 100px;
+    margin-top: 50px;
+}
+
+.top-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-family: 'press_start_2pregular';
+    font-size: 26px;
+}
+
+.instructions {
+    font-family: 'roboto_condenseditalic';
+    font-size: 18px;
+}
+
+.buttons{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.buttons>button {
+    font-family: 'roboto_condensedregular';
+    font-size: 14px;
+    background-color: var(--color-buttons);
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    height: 40px;
+}
+
+.buttons>button:hover {
+    background-color: var(--color-hover);
 }
 
 #main {
-    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 150px;
 }
 
 #boardContainer {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 50px);
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+}
+
+.message {
+    text-align: center;
 }
 
 .cell {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'poppinsextrabold';
+    font-size: 22px;
+    color: var(--color-player);
 }
 
 .row-one {
-    border-bottom: 1px solid #333;
+    border-bottom: 5px solid var(--color-lines);
 }
 
 .row-two {
-    border-bottom: 1px solid #333;
+    border-bottom: 5px solid var(--color-lines);
 }
 
 .column-one {
-    border-right: 1px solid #333;
+    border-right: 5px solid var(--color-lines);
 }
 
 .column-two {
-    border-right: 1px solid #333;
+    border-right: 5px solid var(--color-lines);
+}
+
+#score-one,
+#score-two {
+    white-space: pre;
+    text-align: center;
+    font-family: 'poppinssemibold';
+
+}
+
+#text-info {
+    font-family: 'roboto_condensedregular';
+    font-size: 18px;
 }
 
 .modal {

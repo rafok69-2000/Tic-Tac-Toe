@@ -56,6 +56,9 @@ function gameController(player1, player2) {
     const getScoreP1 = () => players[0].getScore();
     const getScoreP2 = () => players[1].getScore();
 
+    const getNameP1 = () => players[0].name;
+    const getNameP2 = () => players[1].name
+
     const switchTurn = () => {
         if (currentPlayer === players[0]) {
             currentPlayer = players[1];
@@ -141,10 +144,11 @@ function gameController(player1, player2) {
     };
 
     const tie = () => {
-        const hasEmptyCells = gameBoard.getGameBoard().some(row => row.some(element => element === ''));
-        if (hasEmptyCells != true) {
-            console.log('This is a tied')
-        };
+        const hasEmptyCells = gameBoard.getGameBoard().some(
+            row => row.some(element => element === '')
+        );
+
+        return !hasEmptyCells;
     }
 
     const getCurrentPlayer = () => currentPlayer;
@@ -162,31 +166,38 @@ function gameController(player1, player2) {
         if (gameOver === false) {
             if (roundOver === false) {
                 let validMovement = gameBoard.placeMarker(row, col, getCurrentPlayer().symbol);
+                dom.messageTurn();
+                const hasWinner = winner();
                 if (validMovement === true) {
-                    const hasWinner = winner();
                     if (hasWinner === false) {
-                        switchTurn();
-                        tie();
-                    }
-                    if (hasWinner === true) {
-                        let gameHasWinner = gameWinner();
-                        if (gameHasWinner === true) {
-                            console.log('Game Over');
-                            dom.messageGameOver();
-                            gameOver = true;
-                        } else {
-                            dom.messageWinner();
+                        if (tie()) {
                             switchTurn();
+                            dom.messageTie();
                             roundOver = true;
+                        } else {
+                            switchTurn();
+                            dom.messageTurn();
                         }
+
                     }
                 }
-                else {
-                    console.log('Try again')
+                if (hasWinner === true) {
+                    let gameHasWinner = gameWinner();
+                    if (gameHasWinner === true) {
+                        console.log('Game Over');
+                        dom.messageGameOver();
+                        gameOver = true;
+                    } else {
+                        dom.messageWinner();
+                        switchTurn();
+                        roundOver = true;
+                    }
                 }
             }
+            else {
+                console.log('Try again')
+            }
         }
-
     }
 
     const gameWinner = () => {
@@ -215,9 +226,15 @@ function gameController(player1, player2) {
         resetGameOver,
         resetRoundOver,
         getScoreP1,
-        getScoreP2
+        getScoreP2,
+        getNameP1,
+        getNameP2,
     };
+
 }
+
+
+
 
 
 function domController() {
@@ -230,8 +247,8 @@ function domController() {
     const renderBoard = () => {
 
 
-        for (let i = 0; i < gameBoard.getGameBoard().length; i++) {       // Itera sobre las filas
-            for (let j = 0; j < gameBoard.getGameBoard()[i].length; j++) {  // Itera sobre las columnas
+        for (let i = 0; i < gameBoard.getGameBoard().length; i++) {
+            for (let j = 0; j < gameBoard.getGameBoard()[i].length; j++) {
                 const newCell = document.createElement('div');
                 newCell.textContent = gameBoard.getGameBoard()[i][j];
                 newCell.dataset.row = i;
@@ -263,21 +280,22 @@ function domController() {
 
         showScoreP1();
         showScoreP2();
-        if (game.getRoundOver() === false && game.getGameOver() === false) {
-            messageTurn();
-        }
-
     };
 
     const btnReset = document.getElementById('nextRound');
     btnReset.addEventListener('click', () => {
+        if (game.getGameOver()) {
+            return;
+        }
         game.newRound();
         board.innerHTML = '';
         renderBoard();
+        messageTurn();
     });
 
     const btnNewGame = document.getElementById('resetGame');
     btnNewGame.addEventListener('click', () => {
+        messageTurn();
         gameBoard.resetGameBoard();
         game.resetGameOver();
         game.resetRoundOver();
@@ -308,8 +326,13 @@ function domController() {
         const name1 = input1.value;
         const name2 = input2.value;
 
-        player1 = createPlayer(name1, 'X');
-        player2 = createPlayer(name2, 'O');
+        if (name1 === '' || name2 === '') {
+            player1 = createPlayer('Player 1', 'X');
+            player2 = createPlayer('Player 2', 'O');
+        } else {
+            player1 = createPlayer(name1, 'X');
+            player2 = createPlayer(name2, 'O');
+        }
 
         game = gameController(player1, player2);
 
@@ -319,7 +342,11 @@ function domController() {
 
         meModal.classList.remove('show');
 
+        messageTurn();
     });
+    const messageTie = () => {
+        textInfo.textContent = 'Is a tie'
+    }
 
     const messageTurn = () => {
         const turn = game.getCurrentPlayer().name;
@@ -338,19 +365,22 @@ function domController() {
 
     const showScoreP1 = () => {
         const playerScore = game.getScoreP1();
-        scoreP1.textContent = `${playerScore}`;
+        const name = game.getNameP1();
+        scoreP1.textContent = `${name}\n\n${playerScore}`;
     }
 
     const showScoreP2 = () => {
         const playerScore = game.getScoreP2();
-        scoreP2.textContent = `${playerScore}`;
+        const name = game.getNameP2();
+        scoreP2.textContent = `${name}\n\n${playerScore}`;
     }
 
     return {
         renderBoard,
         messageTurn,
         messageWinner,
-        messageGameOver
+        messageGameOver,
+        messageTie
     };
 };
 
@@ -361,3 +391,4 @@ let game = gameController(player1, player2);
 
 const dom = domController();
 dom.renderBoard();
+dom.messageTurn();

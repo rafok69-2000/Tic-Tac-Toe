@@ -11,25 +11,32 @@
 
 <body>
     <div class="header">
-        <span>Tic Tac Toe</span>
-        <button id="nextRound">Next Round</button>
-        <button id="resetGame">Reset Game</button>
-        <button id="showModal">Write your names</button>
+        <div class="top-info">
+            <span class="title"">Tic Tac Toe</span>
+            <span class=" instructions">The game ends when any player wins 3 times.</span>
+        </div>
+        <div class="buttons">
+            <button id="nextRound">Next Round</button>
+            <button id="resetGame">Reset Game</button>
+            <button id="showModal">Write your names</button>
+        </div>
     </div>
     <div id="main">
-        <div id="boardContainer"></div>
-        <span id="text-info"></span>
         <span id="score-one"></span>
+        <div id="boardContainer"></div>
         <span id="score-two"></span>
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <span id="close-modal" class="close-modal">&times;</span>
-                <label for="playerName1">Player O</label>
-                <input type="text" id="playerName1" placeholder="Name...">
-                <label for="playerName2">Player X</label>
-                <input type="text" id="playerName2" placeholder="Name...">
-                <button id="save">Save</button>
-            </div>
+    </div>
+    <div class="message">
+        <span id="text-info"></span>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close-modal">&times;</span>
+            <label for="playerName1">Player O</label>
+            <input type="text" id="playerName1" placeholder="Name...">
+            <label for="playerName2">Player X</label>
+            <input type="text" id="playerName2" placeholder="Name...">
+            <button id="save">Save</button>
         </div>
     </div>
 </body>
