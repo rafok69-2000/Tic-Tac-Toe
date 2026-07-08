@@ -83,60 +83,44 @@ function gameController(player1, player2) {
 
         // win by rows
         if (cellOne != '' && cellOne === cellTwo && cellTwo === cellThree) {
-            console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
-            console.log(getCurrentPlayer().getScore());
             return true
         };
 
         if (cellFour != '' && cellFour === cellFive && cellFive === cellSix) {
-            console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
-            console.log(getCurrentPlayer().getScore());
             return true
         };
 
         if (cellSeven != '' && cellSeven === cellEight && cellEight === cellNine) {
-            console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
-            console.log(getCurrentPlayer().getScore());
             return true
         };
 
         // win by columns 
         if (cellOne != '' && cellOne === cellFour && cellFour === cellSeven) {
-            console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
-            console.log(getCurrentPlayer().getScore());
             return true
         };
 
         if (cellTwo != '' && cellTwo === cellFive && cellFive === cellEight) {
-            console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
-            console.log(getCurrentPlayer().getScore());
             return true
         };
 
         if (cellThree != '' && cellThree === cellSix && cellSix === cellNine) {
-            console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
-            console.log(getCurrentPlayer().getScore());
             return true
         };
 
         // win by cross
         if (cellOne != '' && cellOne === cellFive && cellFive === cellNine) {
-            console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
-            console.log(getCurrentPlayer().getScore());
             return true
         };
 
         if (cellThree != '' && cellThree === cellFive && cellFive === cellSeven) {
-            console.log(`${getCurrentPlayer().name} winner`);
             getCurrentPlayer().increaseScore();
-            console.log(getCurrentPlayer().getScore());
             return true
         };
 
@@ -184,7 +168,6 @@ function gameController(player1, player2) {
                 if (hasWinner === true) {
                     let gameHasWinner = gameWinner();
                     if (gameHasWinner === true) {
-                        console.log('Game Over');
                         dom.messageGameOver();
                         gameOver = true;
                     } else {
@@ -193,9 +176,6 @@ function gameController(player1, player2) {
                         roundOver = true;
                     }
                 }
-            }
-            else {
-                console.log('Try again')
             }
         }
     }
@@ -327,7 +307,7 @@ function domController() {
         const name2 = input2.value;
 
         if (name1 === '' || name2 === '') {
-        } else { 
+        } else {
             player1 = createPlayer(name1, 'X');
             player2 = createPlayer(name2, 'O');
         }
