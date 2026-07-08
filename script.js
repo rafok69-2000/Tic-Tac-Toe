@@ -327,9 +327,7 @@ function domController() {
         const name2 = input2.value;
 
         if (name1 === '' || name2 === '') {
-            player1 = createPlayer('Player 1', 'X');
-            player2 = createPlayer('Player 2', 'O');
-        } else {
+        } else { 
             player1 = createPlayer(name1, 'X');
             player2 = createPlayer(name2, 'O');
         }
