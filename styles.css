@@ -64,6 +64,9 @@
 
 body {
     background-color: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .header {
@@ -196,13 +199,13 @@ body {
 }
 
 .modal-title {
-    margin-top: 20px ;
+    margin-top: 20px;
     font-family: 'press_start_2pregular';
     font-size: 22px;
 }
 
-.modal-content > label {
-    margin-top: 20px ;
+.modal-content>label {
+    margin-top: 20px;
     font-family: 'roboto_condensedregular';
     font-size: 20px;
 }
@@ -249,4 +252,19 @@ input:focus {
 
 #save:hover {
     background-color: var(--color-hover);
+}
+
+.link-github {
+    font-family: 'roboto_condensedregular';
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.link-github>a {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding-bottom: 5px;
+    text-decoration: none;
 }
